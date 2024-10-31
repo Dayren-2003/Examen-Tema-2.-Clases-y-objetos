@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-from clasePlantas import ControladorRegistros
+from clasePlantas import ControladorRegistros  # Asegúrate de que esta clase esté definida correctamente
 
 class Aplicacion(tk.Tk):
     def __init__(self):
@@ -47,40 +47,7 @@ class Aplicacion(tk.Tk):
         self.resultado_label = tk.Label(frame, text="", font=("Arial", 10))
         self.resultado_label.grid(row=2, column=0, columnspan=3, pady=10)
 
-    def obtener_registros(self):
-        data = self.controlador.obtener_registros()
-        if data:
-            self.mostrar_tabla(data)  # Muestra todos los registros obtenidos
-            self.resultado_label.config(text=f"Se obtuvieron {len(data)} registros en total.")
-        else:
-            self.resultado_label.config(text="Error al obtener los registros.")
+        # Configurar expansión para que la tabla se ajuste al redimensionar la ventana
+        frame.grid_rowconfigure(1, weight=1)  # Permite que la tabla se expanda
+        frame.grid_columnconfigure(0, weight=1)  # Permite que el marco se expanda
 
-    def buscar_registro(self):
-        termino = self.entrada_busqueda.get().strip()
-        if not termino:
-            self.resultado_label.config(text="Por favor, ingresa un término de búsqueda.")
-            return
-
-        resultados = self.controlador.buscar_registro(termino)
-        if resultados:
-            self.mostrar_tabla(resultados)
-            self.resultado_label.config(text=f"Se encontraron {len(resultados)} coincidencias.")
-        else:
-            self.resultado_label.config(text="No se encontraron coincidencias.")
-
-    def mostrar_tabla(self, registros):
-        self.tabla.delete(*self.tabla.get_children())
-        for registro in registros:
-            self.tabla.insert(
-                "", "end", values=(
-                    registro.get("id", "N/A"),
-                    registro.get("nombre", "N/A"),
-                    registro.get("apellido", "N/A"),
-                    registro.get("ciudad", "N/A"),
-                    registro.get("calle", "N/A"),
-                )
-            )
-
-if __name__ == "__main__":
-    app = Aplicacion()
-    app.mainloop()

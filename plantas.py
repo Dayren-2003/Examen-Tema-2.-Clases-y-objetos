@@ -1,11 +1,9 @@
 import tkinter as tk
-from tkinter import ttk  # Para usar Treeview
+from tkinter import ttk
 import requests
-import random  # Para seleccionar registros aleatorios
 
 # Variable global para almacenar los datos obtenidos de la API
 data = []
-
 
 # Función para obtener registros desde la API
 def obtener_registros():
@@ -20,10 +18,7 @@ def obtener_registros():
         print("Datos obtenidos de la API:", data)
 
         if data:
-            # Selecciona hasta 10 registros aleatorios para mostrarlos inicialmente
-            num_registros = min(len(data), 10)
-            registros_aleatorios = random.sample(data, num_registros)
-            mostrar_tabla(registros_aleatorios)  # Mostrar registros aleatorios
+            mostrar_tabla(data)  # Mostrar todos los registros
             resultado_label.config(text=f"Se obtuvieron {len(data)} registros en total.")
         else:
             resultado_label.config(text="No se encontraron registros.")
@@ -31,7 +26,6 @@ def obtener_registros():
         resultado_label.config(text=f"Error al obtener los registros: {e}")
     except Exception as e:
         resultado_label.config(text=f"Error inesperado: {e}")
-
 
 # Función para mostrar los registros en la tabla
 def mostrar_tabla(registros):
@@ -50,7 +44,6 @@ def mostrar_tabla(registros):
             )
         )
 
-
 def buscar_registro():
     termino = entrada_busqueda.get().strip()
 
@@ -64,11 +57,11 @@ def buscar_registro():
         # Filtrar si el término es un ID (coincidencia exacta) o texto en otros campos
         resultados = [
             registro for registro in data if
-            str(registro.get("id", "")).lower() == termino.lower() or  # Búsqueda exacta por ID
-            termino.lower() in registro.get("nombre", "").lower() or
-            termino.lower() in registro.get("apellido", "").lower() or
-            termino.lower() in registro.get("ciudad", "").lower() or
-            termino.lower() in registro.get("calle", "").lower()
+            str(registro.get("id", "")) == termino or  # Búsqueda exacta por ID
+            termino in registro.get("nombre", "") or
+            termino in registro.get("apellido", "") or
+            termino in registro.get("ciudad", "") or
+            termino in registro.get("calle", "")
         ]
 
         print("Resultados encontrados:", resultados)  # Verificar en la consola
@@ -85,6 +78,7 @@ def buscar_registro():
 app = tk.Tk()
 app.title("Registros de Plantas")
 app.geometry("800x500")
+app.resizable(False, False)  # Hacer la ventana no redimensionable
 
 # Crear un marco para organizar los widgets
 frame = tk.Frame(app)
@@ -126,3 +120,4 @@ frame.grid_columnconfigure(0, weight=1)
 
 # Iniciar la aplicación
 app.mainloop()
+ 

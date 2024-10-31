@@ -1,6 +1,9 @@
 import requests
 import random
 
+import requests
+import random  # Asegúrate de importar random
+
 class ControladorRegistros:
     def __init__(self):
         self.__data = []  # Atributo privado para almacenar los datos
@@ -35,11 +38,11 @@ class ControladorRegistros:
 
         resultados = [
             registro for registro in self.__data if
-            str(registro.get("id", "")).lower() == termino.lower() or
-            termino.lower() in registro.get("nombre", "").lower() or
-            termino.lower() in registro.get("apellido", "").lower() or
-            termino.lower() in registro.get("ciudad", "").lower() or
-            termino.lower() in registro.get("calle", "").lower()
+            str(registro.get("id", "")) == termino or  # Búsqueda exacta por ID
+            termino in registro.get("nombre", "") or
+            termino in registro.get("apellido", "") or
+            termino in registro.get("ciudad", "") or
+            termino in registro.get("calle", "")
         ]
         print("Resultados encontrados:", resultados)  # Depuración
         return resultados
